@@ -8,6 +8,8 @@ import kotlinx.coroutines.*
 
 class MainViewModel(application:Application) : AndroidViewModel(application) {
 
+    val dispatcher = Dispatchers.IO
+
     var result : MutableLiveData<String> = MutableLiveData("Start")
 
     suspend fun loadFromServer()
@@ -36,9 +38,9 @@ class MainViewModel(application:Application) : AndroidViewModel(application) {
     fun updateValue() {
         // launch a coroutine in viewModelScope
         viewModelScope.launch {
-            withContext(Dispatchers.IO) {
+            withContext(dispatcher) {
                     /// bla bla
-
+               
             }
         }
         viewModelScope.launch {
