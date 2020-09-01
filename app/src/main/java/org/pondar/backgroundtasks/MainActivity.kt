@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.delay
 
 
@@ -25,6 +26,7 @@ class MainActivity : AppCompatActivity() {
 
         viewModel.result.observe(this, androidx.lifecycle.Observer {
             Log.d("new value"," value : ${viewModel.result.value}")
+            output.text = viewModel.result.value
 
         })
 
@@ -33,6 +35,8 @@ class MainActivity : AppCompatActivity() {
         viewModel.getFromServer()
         viewModel.getFromInternet()
 
+        buttonCancel.setOnClickListener {
+            viewModel.cancel() }
 
     }
 }

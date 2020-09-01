@@ -1,6 +1,7 @@
 package org.pondar.backgroundtasks
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -21,7 +22,7 @@ class MainViewModel(application:Application) : AndroidViewModel(application) {
     {
 
         delay(15000)
-        return "News from the Internet"
+        return "News from the Internet:"
     }
 
 
@@ -29,7 +30,7 @@ class MainViewModel(application:Application) : AndroidViewModel(application) {
 
 
             delay(20000)
-            return " : Trumps loses election!t"
+            return " Trumps loses election!"
 
     }
 
@@ -64,14 +65,28 @@ class MainViewModel(application:Application) : AndroidViewModel(application) {
         }
     }
 
+    lateinit var fromNet2 : Deferred<String>
+
+    fun cancel()
+    {
+        fromNet2.cancel()
+    }
+
     fun getFromInternet()
     {
         viewModelScope.launch {
             val fromNet = async {
             getResultFromInternet()
         }
-            val fromNet2 = async {
-                getResultFromInternet2()
+            fromNet2 = async {
+                try {
+                    getResultFromInternet2()
+                }
+                catch (e: CancellationException)
+                {
+                    Log.d("cancel","Coroutine was cancelled")
+                    return@async "Cancelled"
+                }
             }
 
             result.postValue(fromNet.await()+fromNet2.await())

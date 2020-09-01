@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Background Tasks</string>
+    <string name="output_fixed">Output:</string>
 </resources>
